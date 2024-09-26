@@ -1,37 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../../pages/Home.vue';
-import Employee from '../../pages/Employee.vue';
-import Login from '../../pages/Login.vue';
-import Manager from '../../pages/Manager.vue';
-import Order from '../../pages/Order.vue';
+import Test from '../../pages/Test.vue';
+import About from '../../pages/About.vue'
+import Login from '../../pages/Login.vue'
+import Manager from '../../pages/ManagerDashboard.vue';
+import Landing from '../../pages/Landing.vue';
 
 
 const routes = [
   {
     path: '/',
+    name: 'Landing',
+    component: Landing,
+    meta: { hideNav: true }
+  },
+  { 
+    path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
-    path: '/employee',
-    name: 'Employee',
-    component: Employee
+    path: '/test',
+    name: 'Test',
+    component: Test,
+    meta: { hideNav: true }
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: { hideNav: true }
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
   },
   {
     path: '/manager',
     name: 'Manager',
-    component: Manager
-  },
-  {
-    path: '/order',
-    name: 'Order',
-    component: Order
-  },
+    component: Manager,
+    meta: { hideNav: true }
+  }
 
   
 ];
