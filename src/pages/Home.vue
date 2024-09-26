@@ -204,7 +204,7 @@ const fetchProducts = async (category) => {
   loading.value = true;
   error.value = null;
   products.value = [];
-  selectedPrices.value = {}; // Reset selectedPrices on new fetch
+  selectedPrices.value = {}; 
 
   try {
     let apiUrl = '';
@@ -222,7 +222,6 @@ const fetchProducts = async (category) => {
 
     const response = await axios.get(apiUrl);
     products.value = response.data.data || [];
-    // Initialize prices for each product group
     for (const product of products.value) {
       if (!selectedPrices.value[product.name]) {
         selectedPrices.value[product.name] = product.price; 
@@ -273,7 +272,7 @@ const viewOrdered = async () => {
     const response = await axios.get(`http://127.0.0.1:8000/api/${tableId}/ordered`);
 
     if (response.data.success) {
-      orderedItems.value = response.data.data; // Assuming this returns the ordered items
+      orderedItems.value = response.data.data;
     } else {
       toast.error(response.data.message);
     }
@@ -310,13 +309,13 @@ const addToCart = async (item) => {
   try {
     const response = await axios.post(
       `http://127.0.0.1:8000/api/${tableId}/${productId}/add-order`, 
-      { quantity } // Include the quantity in the request body
+      { quantity } 
     );
     
     if (response.data.success) {
       toast.success(response.data.message);
       console.log('Adding to cart:', item);
-      await viewCart(); // Refresh the cart after adding
+      await viewCart(); 
     } else {
       toast.error(response.data.message);
     }
@@ -329,18 +328,17 @@ const addToCart = async (item) => {
 
 // Remove item from cart
 const removeItem = async (item) => {
-  const tableId = item.fkTableId;  // Assuming tableId is part of the item object
-  const productId = item.fkProductId; // Assuming fkProductId is available in the item object
+  const tableId = item.fkTableId; 
+  const productId = item.fkProductId;
 
   console.log('Deleting item with ID:', productId, 'from table:', tableId); 
 
   try {
-    // Send a DELETE request to remove the item from the cart
     const response = await axios.delete(`http://127.0.0.1:8000/api/${tableId}/${productId}/delete-order`);
 
     if (response.data.success) {
-      await viewCart(); // Refresh cart after deletion
-      toast.success(`${item.product.name} removed from cart!`); // Assuming item has product details
+      await viewCart(); 
+      toast.success(`${item.product.name} removed from cart!`); 
     } else {
       toast.error(response.data.message);
     }
@@ -389,7 +387,7 @@ const checkout = async () => {
 const updatePrice = (name, sizeOption) => {
   const product = groupedProducts.value[name].find((p) => p.size === sizeOption);
   if (product) {
-    selectedPrices.value[name] = product.price; // Ensure this price is a number
+    selectedPrices.value[name] = product.price; 
   } else {
     selectedPrices.value[name] = 0; 
   }
@@ -416,7 +414,7 @@ const submitCustomerName = async () => {
     return;
   }
 
-  const namePattern = /^[A-Za-z\s]+$/; // Regular expression for only letters and spaces
+  const namePattern = /^[A-Za-z\s]+$/; 
   if (!namePattern.test(customerName.value)) {
     toast.error('Please enter a valid name (letters only).');
     return;

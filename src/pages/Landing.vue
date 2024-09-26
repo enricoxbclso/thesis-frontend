@@ -47,7 +47,6 @@ const router = useRouter();
 const proceed = async () => {
   if (tableNumber.value) {
     try {
-      // Make a POST request to start a session
       const response = await axios.post('http://127.0.0.1:8000/api/dine-in', {
         tableNumber: tableNumber.value
       });
@@ -55,7 +54,6 @@ const proceed = async () => {
       console.log('Response from backend:', response.data);
 
       if (response.data.success) {
-        // Use the tableNumber as the tableId
         const tableId = tableNumber.value;
 
         console.log('Table ID to be stored:', tableId);

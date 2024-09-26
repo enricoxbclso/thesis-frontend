@@ -57,7 +57,7 @@ import axios from 'axios'
 import { toast } from 'vue3-toastify'
 import logo from '../assets/images/logo.png'
 
-const email = ref('')  // Changed to email
+const email = ref('') 
 const password = ref('')
 
 const login = async () => {

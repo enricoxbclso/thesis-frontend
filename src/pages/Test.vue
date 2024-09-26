@@ -219,10 +219,10 @@ const fetchCompletedOrders = async () => {
 const submitProduct = async () => {
   const formData = new FormData();
   formData.append('name', productName.value);
-  formData.append('price', price.value); // Single price field based on selected size
-  formData.append('size', size.value); // New: Add size field (Small, Medium, Large, No Size)
-  formData.append('type', type.value); // Updated: Replace 'category' with 'type'
-  formData.append('availability', availability.value); // New: Add availability field (Available, Not Available)
+  formData.append('price', price.value);
+  formData.append('size', size.value); 
+  formData.append('type', type.value); 
+  formData.append('availability', availability.value);
   formData.append('productImage', productImage.value);
 
   try {
@@ -238,7 +238,6 @@ const submitProduct = async () => {
   }
 };
 
-// Mark an order as served
 // Mark an order as served
 const markOrderAsServed = async (tableId) => {
   try {

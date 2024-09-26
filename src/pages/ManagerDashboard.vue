@@ -219,14 +219,14 @@ const fetchCompletedOrders = async () => {
 const submitProduct = async () => {
   const formData = new FormData();
   formData.append('name', productName.value);
-  formData.append('price', price.value); // Single price field based on selected size
-  formData.append('size', size.value); // New: Add size field (Small, Medium, Large, No Size)
-  formData.append('type', type.value); // Updated: Replace 'category' with 'type'
-  formData.append('availability', availability.value); // New: Add availability field (Available, Not Available)
+  formData.append('price', price.value); 
+  formData.append('size', size.value); 
+  formData.append('type', type.value); 
+  formData.append('availability', availability.value); 
   formData.append('productImage', productImage.value);
 
   try {
-    await axios.post('http://127.0.0.1:8000/api/admin/add-product', formData, {
+    await axios.post('http://127.0.0.1:8000/api/admin/add-product', formDatagit, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -238,8 +238,7 @@ const submitProduct = async () => {
   }
 };
 
-// Mark an order as served
-// Mark an order as served
+//Serve Order
 const markOrderAsServed = async (tableId) => {
   try {
     await axios.post(`http://127.0.0.1:8000/api/admin/serve-order/${tableId}`, {
@@ -252,17 +251,14 @@ const markOrderAsServed = async (tableId) => {
   }
 };
 
-
-
-
 onMounted(async () => {
   await fetchProducts();
   await fetchPendingOrders();
   await fetchCompletedOrders();
 });
 
-// setInterval(() => {
-//   fetchPendingOrders();
-// }, 10000);
+setInterval(() => {
+  fetchPendingOrders();
+}, 10000);
 </script>
 
