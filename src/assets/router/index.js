@@ -40,14 +40,25 @@ const routes = [
     path: '/manager',
     name: 'Manager',
     component: Manager,
-    meta: { hideNav: true }
+    meta: { hideNav: true, requiresAuth: true } 
   }
-
-  
 ];
+
+
 const router = createRouter({
   history: createWebHistory(),
   routes
 });
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
+
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    next({ name: 'Login' }); 
+  } else {
+    next(); 
+  }
+});
+
 
 export default router;

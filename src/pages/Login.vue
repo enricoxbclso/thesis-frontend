@@ -16,7 +16,7 @@
             id="email"
             type="username"
             class="mt-2 p-3 block w-full border-none rounded-lg bg-gray-100 placeholder-gray-500 focus:ring-gray-500 focus:outline-none"
-            placeholder="Enter Userz"
+            placeholder="Enter Username"
             required
           />
         </div>
@@ -63,11 +63,12 @@ const password = ref('')
 const login = async () => {
   try {
     const response = await axios.post('http://localhost:8000/api/admin/login', {
-      email: email.value,  
+      email: email.value,
       password: password.value,
     });
 
-    if (response.data.success) { 
+    if (response.data.success) {
+      localStorage.setItem('isLoggedIn', 'true'); 
       window.location.href = '/manager'; 
     } else {
       toast.error(response.data.message || 'Login failed. Please check your credentials and try again.');
