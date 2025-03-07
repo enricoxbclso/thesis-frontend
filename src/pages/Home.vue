@@ -39,24 +39,36 @@
 
          <!-- Product Card -->
               <div v-for="(productGroup, name) in groupedProducts" :key="name" class="border border-gray-300 pt-8 mb-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 w-full max-w-2xl mx-auto bg-white overflow-hidden">
-                
-                <img v-if="productGroup.length > 0 && productGroup[0].productImage" :src="getProductImage(productGroup[0].productImage)" alt="Product Image" class="w-full h-64 object-contain rounded-t-lg" @error="handleImageError($event)" />
-                <p v-else class="text-red-500 text-center py-2">Image not available</p>
+
+                  <img v-if="productGroup.length > 0 && productGroup[0].productImage" :src="getProductImage(productGroup[0].productImage)" alt="Product Image" class="w-full h-64 object-cover rounded-t-lg" @error="handleImageError($event)" />
+  <p v-else class="text-red-500 text-center py-2 min-h-64 flex items-center justify-center">Image not available</p>
 
                 <div class="p-6">
-                  <p class="text-[20px] text-gray-600 mb-2 text-left font-medium">₱{{ selectedPrices[name] }}.00</p>
-                  <h3 class="text-[28px] font-semibold text-gray-800 mb-2 text-left">{{ name }}</h3>
-
+                  <h3 class="text-[20px] font-semibold text-gray-800 mb-2 text-center">{{ name }}</h3>
+                  <p class="text-[20px] text-gray-600 mb-2 text-center font-medium">₱{{ selectedPrices[name] }}.00</p>
+              
                   <!-- Size selection only for products with sizes -->
-                  <div v-if="productGroup[0].size !== 'No Size'" class="mb-4">
-                    <label class="block text-[18px] text-gray-700 mb-2 text-left">Size:</label>
-                    <div class="flex justify-start">
-                      <label v-for="sizeOption in sizeOptions(name)" :key="sizeOption" class="inline-flex items-center mx-4">
-                        <input type="radio" :name="`size-${name}`" :value="sizeOption" v-model="selectedSizes[name]" @change="updatePrice(name, sizeOption)" class="form-radio text-blue-500 w-6 h-6 rounded-full border-2 border-gray-400 focus:outline-none focus:ring focus:ring-blue-500" />
-                        <span class="ml-2 text-[20px] text-gray-700">{{ sizeOption }}</span>
-                      </label>
-                    </div>
-                  </div>
+<div v-if="productGroup[0].size !== 'No Size'" class="mb-4">
+  <label class="block text-[18px] text-gray-700 mb-2 text-left">Size:</label>
+
+  <div class="grid grid-cols-3 gap-2 w-full max-w-[240px]">
+    <label 
+      v-for="sizeOption in sizeOptions(name)" 
+      :key="sizeOption" 
+      class="flex items-center justify-center bg-gray-200 px-4 py-2 rounded-lg"
+    >
+      <input 
+        type="radio" 
+        :name="`size-${name}`" 
+        :value="sizeOption" 
+        v-model="selectedSizes[name]" 
+        @change="updatePrice(name, sizeOption)" 
+        class="hidden"
+      />
+      <span class="text-[18px] text-gray-700">{{ sizeOption }}</span>
+    </label>
+  </div>
+</div>
 
                   <!-- Quantity controls -->
                   <div class="mb-8">
@@ -71,7 +83,7 @@
                   <!-- Total price -->
                   <div class="mt-3 md:text-lg text-left">
                     <label class="block text-[20px] mb-2">Total Price:</label>
-                    <span class="px-4 text-[24px] font-semibold">₱{{ (selectedPrices[name] * (selectedQuantities[name] || 1)) }}.00</span>
+                    <span class="px-4 text-[20px] font-semibold">₱{{ (selectedPrices[name] * (selectedQuantities[name] || 1)) }}.00</span>
                   </div>
 
                   <button @click="addToCart({ name, price: selectedPrices[name], size: productGroup[0].size !== 'No Size' ? selectedSizes[name] : 'No Size', quantity: selectedQuantities[name] || 1 })" class="mt-4 w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition duration-300">
