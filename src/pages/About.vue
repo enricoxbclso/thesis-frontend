@@ -19,9 +19,10 @@
           <p class="text-lg text-gray-700 leading-relaxed">
             At Tea Crate Cafe, we believe that every drink tells a story. Whether you're enjoying our best-selling milk tea or exploring our seasonal drinks, we're committed to providing a unique and flavorful experience. Our cafe is more than just a place to grab a drink – it’s a community space where friends and family can gather, relax, and enjoy life’s sweetest moments.
           </p>
-          <button class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300">
+          <br>
+          <router-link to="/home" class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300">
             Check Our Menu
-          </button>
+          </router-link>
         </div>
       </div>
 

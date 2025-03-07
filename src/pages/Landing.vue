@@ -46,35 +46,40 @@
 
   const proceed = async () => {
     if (tableNumber.value) {
-      try {
-        const response = await axios.post('http://127.0.0.1:8000/api/dine-in', {
-          tableNumber: tableNumber.value
-        });
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/dine-in', {
+      tableNumber: tableNumber.value
+    });
 
-        console.log('Response from backend:', response.data);
+    console.log('Response from backend:', response.data);
 
-        if (response.data.success) {
-          const tableId = tableNumber.value;
+    if (response.data.success) {
+      const tableId = tableNumber.value;
 
-          console.log('Table ID to be stored:', tableId);
+      console.log('Table ID to be stored:', tableId);
 
-          // Store the tableId in local storage
-          localStorage.setItem('tableId', tableId);
+      // Store the tableId in local storage
+      localStorage.setItem('tableId', tableId);
 
-          console.log('Stored tableId in localStorage:', localStorage.getItem('tableId'));
+      console.log('Stored tableId in localStorage:', localStorage.getItem('tableId'));
 
-          toast.success(`Session started for table number: ${tableNumber.value}`);
-          router.push('/home'); 
-        } else {
-          toast.error(response.data.message || 'Error starting session.');
-        }
-      } catch (error) {
-        console.error('Error starting session:', error);
-        toast.error('Failed to start session. Please try again.');
-      }
+      toast.success(`Session started for table number: ${tableNumber.value}`);
+      router.push('/home'); 
     } else {
-      toast.error('Please enter a table number.');
+      toast.error(response.data.message || 'Error starting session.');
     }
+  } catch (error) {
+    console.error('Error starting session:', error);
+
+    // ✅ Fix: Use error.response to get backend error message
+    const errorMessage = error.response?.data?.message || 'Failed to start session. Please try again.';
+    
+    toast.error(errorMessage);
+  }
+} else {
+  toast.error('Please enter a table number.');
+}
+
   };
   </script>
 

@@ -92,30 +92,57 @@
         </div>
         
           <!-- Current Menu Items -->
-        <div class="mt-8">
-          <h3 class="text-2xl font-semibold mb-6">Current Menu Items</h3>
-          <div v-if="products.length > 0">
-            <div v-for="product in products" :key="product.pkProductId" class="bg-white rounded-lg shadow-md mb-4 p-4">
-              <div class="font-bold text-xl mb-2">Product Name: <span class="font-semibold text-xl ml-2">{{ product.name }}</span></div>
-              <div class="flex flex-col space-y-2">
-                <div class="text-lg text-gray-600">
-                  <div class="mb-2">Price: ₱{{ product.price }}</div>
-                  <div class="mb-2">Size: {{ product.size }}</div>
-                  <div :class="{'text-green-600': product.availability === 'Available', 'text-red-600': product.availability === 'Not Available'}" class="font-semibold">
-                    {{ product.availability }}
-                  </div>
-                </div>
-                <div class="mt-4 flex space-x-2">
-                  <button @click="editProduct(product)" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200">Edit</button>
-                  <button @click="deleteProduct(product.pkProductId)" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">Delete</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <p class="text-gray-500">No products found.</p>
+          <div class="mt-8">
+  <h3 class="text-2xl font-semibold mb-6">Current Menu Items</h3>
+  
+  <div v-if="products.length > 0">
+    <div v-for="product in products" :key="product.pkProductId" class="bg-white rounded-lg shadow-md mb-4 p-4">
+      <div class="font-bold text-xl mb-2">
+        Product Name: <span class="font-semibold text-xl ml-2">{{ product.name }}</span>
+      </div>
+      <div class="flex flex-col space-y-2">
+        <div class="text-lg text-gray-600">
+          <div class="mb-2">Price: ₱{{ product.price }}</div>
+          <div class="mb-2">Size: {{ product.size }}</div>
+          <div :class="{'text-green-600': product.availability === 'Available', 'text-red-600': product.availability === 'Not Available'}"
+               class="font-semibold">
+            {{ product.availability }}
           </div>
         </div>
+        <div class="mt-4 flex space-x-2">
+          <button @click="editProduct(product)" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200">
+            Edit
+          </button>
+          <button @click="deleteProduct(product.pkProductId)" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination Controls Here -->
+    <div class="flex justify-center mt-4 space-x-2">
+      <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1"
+              class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50">
+        Previous
+      </button>
+
+      <span class="px-4 py-2 bg-gray-200 rounded">
+        Page {{ currentPage }} of {{ totalPages }}
+      </span>
+
+      <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages"
+              class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50">
+        Next
+      </button>
+    </div>
+  </div>
+  
+  <div v-else>
+    <p class="text-gray-500">No products found.</p>
+  </div>
+</div>
+
       </section>
 
       <!-- Orders Tracking Section -->
@@ -195,6 +222,12 @@ const products = ref([]);
 const pendingOrders = ref([]); 
 const completedOrders = ref([]); 
 const servedOrders = ref([]); 
+const currentPage = ref(1);
+const perPage = ref(3); // Default items per page
+const totalPages = ref(1);
+
+
+
 
 const formContainer = ref(null)
 const selectedProduct = ref(null)
@@ -209,12 +242,23 @@ const handleImageUpload = (event) => {
   }
 };
 // Fetch products from the API
-const fetchProducts = async () => {
+
+const fetchProducts = async (page = 1) => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/admin/products');
-    products.value = response.data.data;
+    const response = await axios.get(`http://127.0.0.1:8000/api/admin/products?page=${page}&per_page=${perPage.value}`);
+    
+    products.value = response.data.data;  // Update products list
+    currentPage.value = response.data.pagination.current_page;
+    totalPages.value = response.data.pagination.last_page;
   } catch (error) {
     toast.error('Failed to fetch products.');
+  }
+};
+
+// Change Page Function
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    fetchProducts(page);
   }
 };
 

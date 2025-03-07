@@ -168,15 +168,17 @@
             </div>
             <p class="text-md font-semibold text-gray-800">₱ {{ (item.product.price * item.quantity) }}</p>
           </div>
-          <button 
+         
+        </div>
+        <div v-else class="text-center text-gray-500">No orders yet.</div>
+      </div>
+      <div><br></div>
+       <button 
             @click="dineOut"
             class="w-full bg-red-500 hover:bg-green-600 text-white font-bold py-2 rounded-md mb-4"
           >
             Dine Out
           </button>
-        </div>
-        <div v-else class="text-center text-gray-500">No orders yet.</div>
-      </div>
     </div>
     
   </div>
